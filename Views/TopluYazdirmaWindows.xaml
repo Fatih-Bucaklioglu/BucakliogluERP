@@ -1,0 +1,137 @@
+﻿<Window x:Class="BucakliogluERP.Views.TopluYazdirmaWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Toplu Yazdırma" 
+        Height="500" 
+        Width="700"
+        WindowStartupLocation="CenterOwner"
+        Background="#F5F5F5">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Başlık -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Toplu Yazdırma" 
+                      FontSize="24" 
+                      FontWeight="Bold"
+                      Foreground="#2C3E50"
+                      Margin="0,0,0,10"/>
+            <TextBlock Text="Yazdırılacak siparişleri seçin" 
+                      FontSize="14" 
+                      Foreground="#6C757D"/>
+        </StackPanel>
+
+        <!-- Sipariş Listesi -->
+        <Border Grid.Row="1" 
+                Background="White" 
+                CornerRadius="10" 
+                Padding="15">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.1"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Tümünü Seç -->
+                <CheckBox Grid.Row="0" 
+                         x:Name="chkTumunuSec"
+                         Content="Tümünü Seç / Kaldır"
+                         FontWeight="SemiBold"
+                         Margin="0,0,0,10"
+                         Checked="TumunuSec_Changed"
+                         Unchecked="TumunuSec_Changed"/>
+
+                <!-- Liste -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="lstSiparisler">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#F8F9FA" 
+                                       CornerRadius="8" 
+                                       Padding="12" 
+                                       Margin="0,0,0,8">
+                                    <CheckBox IsChecked="{Binding Secili, Mode=TwoWay}">
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" FontSize="14">
+                                                <Run Text="Sipariş No: "/>
+                                                <Run Text="{Binding Siparis.SiparisNo}"/>
+                                            </TextBlock>
+                                            <TextBlock FontSize="12" Foreground="#6C757D" Margin="0,3,0,0">
+                                                <Run Text="Müşteri: "/>
+                                                <Run Text="{Binding Siparis.Musteri.Muhattap}"/>
+                                                <Run Text=" | "/>
+                                                <Run Text="Tarih: "/>
+                                                <Run Text="{Binding Siparis.Tarih, StringFormat=dd.MM.yyyy}"/>
+                                                <Run Text=" | "/>
+                                                <Run Text="Toplam: "/>
+                                                <Run Text="{Binding Siparis.GenelToplam, StringFormat={}{0:N2} ₺}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </CheckBox>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <!-- Alt Butonlar -->
+        <Grid Grid.Row="2" Margin="0,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" 
+                      x:Name="txtSecilenSayisi"
+                      Text="0 sipariş seçildi" 
+                      FontSize="14"
+                      Foreground="#6C757D"
+                      VerticalAlignment="Center"/>
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="📄 A4 Yazdır" 
+                       Click="A4Yazdir_Click"
+                       Background="#0066CC"
+                       Foreground="White"
+                       Padding="20,10"
+                       Margin="0,0,10,0"
+                       BorderThickness="0"
+                       FontWeight="SemiBold"
+                       Cursor="Hand"/>
+
+                <Button Content="📋 A5 Yazdır" 
+                       Click="A5Yazdir_Click"
+                       Background="#28A745"
+                       Foreground="White"
+                       Padding="20,10"
+                       Margin="0,0,10,0"
+                       BorderThickness="0"
+                       FontWeight="SemiBold"
+                       Cursor="Hand"/>
+            </StackPanel>
+
+            <Button Grid.Column="3"
+                   Content="İptal" 
+                   Click="Iptal_Click"
+                   Background="#6C757D"
+                   Foreground="White"
+                   Padding="20,10"
+                   BorderThickness="0"
+                   FontWeight="SemiBold"
+                   Cursor="Hand"/>
+        </Grid>
+    </Grid>
+</Window>

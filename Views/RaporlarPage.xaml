@@ -1,0 +1,284 @@
+﻿<Page x:Class="BucakliogluERP.Views.RaporlarPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Raporlar"
+      Background="Transparent">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20">
+            <TextBlock Text="Detaylı Raporlar" 
+                      FontSize="28" 
+                      FontWeight="Bold"
+                      Foreground="#2C3E50"
+                      Margin="0,0,0,30"/>
+
+            <!-- Tarih Filtreleri -->
+            <Border Background="White" 
+                    CornerRadius="10" 
+                    Padding="20"
+                    Margin="0,0,0,20">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.1"/>
+                </Border.Effect>
+
+                <StackPanel>
+                    <TextBlock Text="Rapor Filtresi" FontSize="16" FontWeight="Bold" Margin="0,0,0,15"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Başlangıç:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <DatePicker Grid.Column="1" x:Name="dpBaslangic" Padding="8" Margin="0,0,20,0"/>
+
+                        <TextBlock Grid.Column="2" Text="Bitiş:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <DatePicker Grid.Column="3" x:Name="dpBitis" Padding="8" Margin="0,0,20,0"/>
+
+                        <Button Grid.Column="4" 
+                               Content="🔍 Raporları Oluştur" 
+                               Click="RaporlariOlustur_Click"
+                               Background="#3498DB"
+                               Foreground="White"
+                               Padding="20,10"
+                               BorderThickness="0"
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Left"/>
+                    </Grid>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                        <Button Content="Bu Ay" Click="BuAy_Click" Style="{StaticResource HizliFiltre}"/>
+                        <Button Content="Bu Yıl" Click="BuYil_Click" Style="{StaticResource HizliFiltre}"/>
+                        <Button Content="Son 30 Gün" Click="Son30Gun_Click" Style="{StaticResource HizliFiltre}"/>
+                        <Button Content="Son 90 Gün" Click="Son90Gun_Click" Style="{StaticResource HizliFiltre}"/>
+                        <Button Content="Tüm Zamanlar" Click="TumZamanlar_Click" Style="{StaticResource HizliFiltre}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Performans Özeti -->
+            <Border Background="White" 
+                    CornerRadius="10" 
+                    Padding="20"
+                    Margin="0,0,0,20">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.1"/>
+                </Border.Effect>
+
+                <StackPanel>
+                    <TextBlock Text="Performans Özeti" FontSize="18" FontWeight="Bold" Margin="0,0,0,20"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Margin="0,0,15,0">
+                            <TextBlock Text="Toplam Ciro" FontSize="13" Foreground="#6C757D"/>
+                            <TextBlock x:Name="txtToplamCiro" Text="0,00 ₺" FontSize="24" FontWeight="Bold" Foreground="#28A745"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Margin="0,0,15,0">
+                            <TextBlock Text="Sipariş Sayısı" FontSize="13" Foreground="#6C757D"/>
+                            <TextBlock x:Name="txtSiparisSayisi" Text="0" FontSize="24" FontWeight="Bold" Foreground="#3498DB"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2" Margin="0,0,15,0">
+                            <TextBlock Text="Ortalama Sipariş" FontSize="13" Foreground="#6C757D"/>
+                            <TextBlock x:Name="txtOrtalamaSiparis" Text="0,00 ₺" FontSize="24" FontWeight="Bold" Foreground="#FFC107"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="3">
+                            <TextBlock Text="Müşteri Sayısı" FontSize="13" Foreground="#6C757D"/>
+                            <TextBlock x:Name="txtMusteriSayisi" Text="0" FontSize="24" FontWeight="Bold" Foreground="#9C27B0"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Tab Control -->
+            <TabControl x:Name="tabRaporlar" Height="500">
+                <!-- Aylık Satış -->
+                <TabItem Header="📊 Aylık Satış">
+                    <Border Background="White" Padding="20">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,15">
+                                <TextBlock Text="Aylık Satış Raporu" FontSize="16" FontWeight="Bold"/>
+                                <Button Content="📊 Excel'e Aktar" 
+                                       Click="AylikSatisExcel_Click"
+                                       Background="#28A745"
+                                       Foreground="White"
+                                       Padding="15,8"
+                                       BorderThickness="0"
+                                       HorizontalAlignment="Right"/>
+                            </Grid>
+
+                            <DataGrid x:Name="dgAylikSatis" 
+                                     AutoGenerateColumns="False"
+                                     IsReadOnly="True"
+                                     HeadersVisibility="Column"
+                                     GridLinesVisibility="Horizontal"
+                                     RowHeight="35">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Ay" Binding="{Binding AyAdi}" Width="*"/>
+                                    <DataGridTextColumn Header="Sipariş Sayısı" Binding="{Binding SiparisSayisi}" Width="*"/>
+                                    <DataGridTextColumn Header="Toplam Ciro" Binding="{Binding ToplamCiro, StringFormat={}{0:N2} ₺}" Width="*"/>
+                                    <DataGridTextColumn Header="Ortalama Sipariş" Binding="{Binding OrtalamaSiparis, StringFormat={}{0:N2} ₺}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Border>
+                </TabItem>
+
+                <!-- En Çok Satan Ürünler -->
+                <TabItem Header="🏆 En Çok Satan Ürünler">
+                    <Border Background="White" Padding="20">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,15">
+                                <TextBlock Text="En Çok Satan Ürünler (Top 20)" FontSize="16" FontWeight="Bold"/>
+                                <Button Content="📊 Excel'e Aktar" 
+                                       Click="UrunSatisExcel_Click"
+                                       Background="#28A745"
+                                       Foreground="White"
+                                       Padding="15,8"
+                                       BorderThickness="0"
+                                       HorizontalAlignment="Right"/>
+                            </Grid>
+
+                            <DataGrid x:Name="dgEnCokSatan" 
+                                     AutoGenerateColumns="False"
+                                     IsReadOnly="True"
+                                     HeadersVisibility="Column"
+                                     GridLinesVisibility="Horizontal"
+                                     RowHeight="35">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Kategori" Binding="{Binding Kategori}" Width="*"/>
+                                    <DataGridTextColumn Header="Ürün" Binding="{Binding Ebat}" Width="2*"/>
+                                    <DataGridTextColumn Header="Toplam Miktar" Binding="{Binding ToplamMiktar, StringFormat=N2}" Width="*"/>
+                                    <DataGridTextColumn Header="Toplam Tutar" Binding="{Binding ToplamTutar, StringFormat={}{0:N2} ₺}" Width="*"/>
+                                    <DataGridTextColumn Header="Satış Sayısı" Binding="{Binding SatisSayisi}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Border>
+                </TabItem>
+
+                <!-- En Karlı Müşteriler -->
+                <TabItem Header="👥 En Karlı Müşteriler">
+                    <Border Background="White" Padding="20">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,15">
+                                <TextBlock Text="En Karlı Müşteriler (Top 20)" FontSize="16" FontWeight="Bold"/>
+                                <Button Content="📊 Excel'e Aktar" 
+                                       Click="MusteriRaporuExcel_Click"
+                                       Background="#28A745"
+                                       Foreground="White"
+                                       Padding="15,8"
+                                       BorderThickness="0"
+                                       HorizontalAlignment="Right"/>
+                            </Grid>
+
+                            <DataGrid x:Name="dgEnKarliMusteriler" 
+                                     AutoGenerateColumns="False"
+                                     IsReadOnly="True"
+                                     HeadersVisibility="Column"
+                                     GridLinesVisibility="Horizontal"
+                                     RowHeight="35">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Müşteri" Binding="{Binding MusteriAdi}" Width="2*"/>
+                                    <DataGridTextColumn Header="Sipariş Sayısı" Binding="{Binding SiparisSayisi}" Width="*"/>
+                                    <DataGridTextColumn Header="Toplam Harcama" Binding="{Binding ToplamHarcama, StringFormat={}{0:N2} ₺}" Width="*"/>
+                                    <DataGridTextColumn Header="Ortalama" Binding="{Binding OrtalamaHarcama, StringFormat={}{0:N2} ₺}" Width="*"/>
+                                    <DataGridTextColumn Header="Son Sipariş" Binding="{Binding SonSiparisTarihi, StringFormat=dd.MM.yyyy}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Border>
+                </TabItem>
+
+                <!-- Kategori Analizi -->
+                <TabItem Header="📦 Kategori Analizi">
+                    <Border Background="White" Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="Kategori Bazlı Satış Raporu" FontSize="16" FontWeight="Bold" Margin="0,0,0,15"/>
+
+                            <DataGrid x:Name="dgKategoriRaporu" 
+                                     AutoGenerateColumns="False"
+                                     IsReadOnly="True"
+                                     HeadersVisibility="Column"
+                                     GridLinesVisibility="Horizontal"
+                                     RowHeight="35">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Kategori" Binding="{Binding Kategori}" Width="*"/>
+                                    <DataGridTextColumn Header="Toplam Satış" Binding="{Binding ToplamSatis, StringFormat={}{0:N2} ₺}" Width="*"/>
+                                    <DataGridTextColumn Header="Toplam Miktar" Binding="{Binding ToplamMiktar, StringFormat=N2}" Width="*"/>
+                                    <DataGridTextColumn Header="Ürün Çeşidi" Binding="{Binding UrunSayisi}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Border>
+                </TabItem>
+
+                <!-- Ödeme Durumu -->
+                <TabItem Header="💰 Ödeme Durumu">
+                    <Border Background="White" Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="Ödeme Durumu Raporu" FontSize="16" FontWeight="Bold" Margin="0,0,0,20"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" Background="#FFF3CD" CornerRadius="10" Padding="20" Margin="0,0,10,0">
+                                    <StackPanel>
+                                        <TextBlock Text="Toplam Borç" FontSize="14" Foreground="#856404"/>
+                                        <TextBlock x:Name="txtToplamBorc" Text="0,00 ₺" FontSize="28" FontWeight="Bold" Foreground="#856404" Margin="0,10,0,0"/>
+                                        <TextBlock x:Name="txtBorcluSayisi" Text="0 müşteri" FontSize="12" Foreground="#856404" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Grid.Column="1" Background="#D4EDDA" CornerRadius="10" Padding="20" Margin="0,0,10,0">
+                                    <StackPanel>
+                                        <TextBlock Text="Toplam Alacak" FontSize="14" Foreground="#155724"/>
+                                        <TextBlock x:Name="txtToplamAlacak" Text="0,00 ₺" FontSize="28" FontWeight="Bold" Foreground="#155724" Margin="0,10,0,0"/>
+                                        <TextBlock x:Name="txtAlacakliSayisi" Text="0 müşteri" FontSize="12" Foreground="#155724" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Grid.Column="2" Background="#F8D7DA" CornerRadius="10" Padding="20">
+                                    <StackPanel>
+                                        <TextBlock Text="Tahsil Edilmemiş" FontSize="14" Foreground="#721C24"/>
+                                        <TextBlock x:Name="txtTahsilEdilmemisRapor" Text="0,00 ₺" FontSize="28" FontWeight="Bold" Foreground="#721C24" Margin="0,10,0,0"/>
+                                        <TextBlock Text="Bekleyen Tahsilat" FontSize="12" Foreground="#721C24" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </TabItem>
+            </TabControl>
+        </StackPanel>
+    </ScrollViewer>
+
+    <Page.Resources>
+        <Style x:Key="HizliFiltre" TargetType="Button">
+            <Setter Property="Background" Value="#ECF0F1"/>
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </Page.Resources>
+</Page>

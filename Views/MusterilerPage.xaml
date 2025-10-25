@@ -1,0 +1,59 @@
+﻿<Page x:Class="BucakliogluERP.Views.MusterilerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Müşteriler"
+      Background="Transparent">
+
+    <Grid Margin="20">
+        <Border Background="White" 
+                CornerRadius="10" 
+                Padding="30">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.1"/>
+            </Border.Effect>
+
+            <StackPanel>
+                <TextBlock Text="Müşteri Listesi" 
+                          FontSize="28" 
+                          FontWeight="Bold"
+                          Foreground="#2C3E50"
+                          Margin="0,0,0,30"/>
+
+                <ScrollViewer Height="600" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="lstMusteriler">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#F8F9FA" 
+                                       CornerRadius="10" 
+                                       Padding="20" 
+                                       Margin="0,0,20,20"
+                                       Width="300"
+                                       Cursor="Hand">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Muhattap}" 
+                                                  FontSize="18" 
+                                                  FontWeight="Bold"
+                                                  Foreground="#2C3E50"/>
+                                        <TextBlock Text="{Binding Telefon}" 
+                                                  FontSize="14" 
+                                                  Foreground="#6C757D"
+                                                  Margin="0,5,0,0"/>
+                                        <TextBlock Text="{Binding Firma}" 
+                                                  FontSize="13" 
+                                                  Foreground="#6C757D"
+                                                  Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    </ItemsControl>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>
